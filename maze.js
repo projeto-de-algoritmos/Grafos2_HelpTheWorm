@@ -297,5 +297,34 @@ class Cell {
       return undefined;
     }
   }
+
+    // Wall drawing functions for each cell. Will be called if relevent wall is set to true in cell constructor
+    drawTopWall(x, y, size, columns, rows) {
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + size / columns, y);
+      ctx.stroke();
+    }
+  
+    drawRightWall(x, y, size, columns, rows) {
+      ctx.beginPath();
+      ctx.moveTo(x + size / columns, y);
+      ctx.lineTo(x + size / columns, y + size / rows);
+      ctx.stroke();
+    }
+  
+    drawBottomWall(x, y, size, columns, rows) {
+      ctx.beginPath();
+      ctx.moveTo(x, y + size / rows);
+      ctx.lineTo(x + size / columns, y + size / rows);
+      ctx.stroke();
+    }
+  
+    drawLeftWall(x, y, size, columns, rows) {
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x, y + size / rows);
+      ctx.stroke();
+    }
 }
 
