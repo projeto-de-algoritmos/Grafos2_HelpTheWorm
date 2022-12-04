@@ -57,14 +57,16 @@ class Maze {
 
     this.res_egg[0] = randomNumber(0, this.rows - 1);
     console.log("res_egg: ", this.res_egg[0]);
-    this.grid[this.res_egg[0][0]][this.res_egg[0][1]].egg = true;
+    this.grid[this.res_egg[0][0]][this.res_egg[0][1]].egg[0] = true;
     this.res_egg[1] = randomNumber(0, this.rows - 1);
     console.log("res_egg2: ", this.res_egg[1]);
-    this.grid[this.res_egg[1][0]][this.res_egg[1][1]].egg2 = true;
+    this.grid[this.res_egg[1][0]][this.res_egg[1][1]].egg[1] = true;
     this.res_egg[2] = randomNumber(0, this.rows - 1);
     console.log("res_egg3: ", this.res_egg[2]);
-    this.grid[this.res_egg[2][0]][this.res_egg[2][1]].egg3 = true;
+    this.grid[this.res_egg[2][0]][this.res_egg[2][1]].egg[2] = true;
   }
+
+  
 
   // Draw the canvas by setting the size and placing the cells in the grid array on the canvas.
   draw() {
@@ -72,7 +74,7 @@ class Maze {
     maze.height = this.size;
     maze.style.background = "black";
     // Set the first cell as visited
-    console.log("current: ", current);
+    console.log("currentssss: ", current);
     current.visited = true;
     // Loop through the 2d grid array and call the show method for each cell instance
     for (let r = 0; r < this.rows; r++) {
@@ -137,9 +139,8 @@ class Cell {
       leftWall: true,
     };
     this.goal = false;
-    this.egg = false;
-    this.egg2 = false;
-    this.egg3 = false;
+    this.egg = [false, false, false];
+
     // parentGrid is passed in to enable the checkneighbours method.
     // parentSize is passed in to set the size of each cell on the grid
     this.parentGrid = parentGrid;
@@ -227,10 +228,12 @@ class Cell {
   }
 
   // Highlights the current cell on the grid. Columns is once again passed in to set the size of the grid.
-  highlight(columns) {
+  highlight(columns) { 
     // Additions and subtractions added so the highlighted cell does cover the walls
     let x = (this.colNum * this.parentSize) / columns + 1;
     let y = (this.rowNum * this.parentSize) / columns + 1;
+    console.log("x: ", x);
+    console.log("y: ", y);
     ctx.fillStyle = "purple";
     ctx.fillRect(
       x,
@@ -239,8 +242,6 @@ class Cell {
       this.parentSize / columns - 3
     );
   }
-
-
 
   // Draws each of the cells on the maze canvas
   show(size, rows, columns) {
@@ -263,21 +264,30 @@ class Cell {
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
     }
 
-    if (this.egg) {
+    if (this.egg[0]) {
       ctx.fillStyle = "rgb(123, 123, 123)";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
     }
-    if (this.egg2) {
+    if (this.egg[1]) {
       ctx.fillStyle = "rgb(123, 123, 123)";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
     }
-    if (this.egg3) {
+    if (this.egg[2]) {
       ctx.fillStyle = "rgb(123, 123, 123)";
+      ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+    }
+
+    if (this.egg[0] == 3) {
+      ctx.fillStyle = "pink"
+      ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+    }
+    if (this.egg[1] == 3) {
+      ctx.fillStyle = "pink";
+      ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+    }
+    if (this.egg[2] == 3) {
+      ctx.fillStyle = "pink";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
     }
   }
 }
-
-// let newMaze = new Maze(600, 50, 50);
-// newMaze.setup();
-// newMaze.draw();

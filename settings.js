@@ -9,6 +9,7 @@ let newMaze;
 let newdjikstra;
 let time = 0;
 let pos = ['a',]
+let cont = 0;
 
 form.addEventListener("submit", generateMaze);
 document.addEventListener("keydown", move);
@@ -29,7 +30,7 @@ function generateMaze(e) {
 
   let mazeSize = size.value;
   let number = rowsCols.value;
-  if (mazeSize > 600 || number > 50) {
+  if (mazeSize > 600 || number > 100) {
     alert("Maze too large!");
     return;
   }
@@ -41,19 +42,6 @@ function generateMaze(e) {
   newMaze.draw();
 
 }
-
-// function allpossible(arr) {
-//   var result = [];
-//   for (var i = 0; i < arr.length; i++) {
-//     var first = arr[i];
-//     var rest = arr.slice(0, i).concat(arr.slice(i + 1));
-//     var innerPermutations = allpossible(rest);
-//     for (var j = 0; j < innerPermutations.length; j++) {
-//       result.push(first.concat(innerPermutations[j]));
-//     }
-//   }
-//   return result;
-// }
 
 const permutator = (inputArr) => {
   let result = [];
@@ -74,8 +62,6 @@ const permutator = (inputArr) => {
 
   return result;
 }
-
-
 
 function djikstra(rowsCols) {
   var graph = new WeightedGraph();
@@ -318,15 +304,28 @@ function moveBlock(path) {
   let col = current.colNum;
 
   for (let i = 1; i < path.length; i++) {
-
+   
     setTimeout(function () {
+      newMaze.draw();
+
       ii = position_i(path[i]);
       jj = position_j(path[i], Number(ii[1]));
       let next = newMaze.grid[ii[0]][jj];
+      // 
+      console.log("current1 ", current);
+      
       current = next;
       newMaze.draw();
       current.highlight(newMaze.columns);
-      if (current.goal) complete.style.display = "block";
+      console.log("current2 ", current);
+      for (let i = 0; i < 3; i++) {
+        if (current.egg[i]) {
+          current.egg[i] = 3;
+          cont++;
+          console.log("cont ", cont);
+        }
+      }
+      if (current.goal && cont >= 3) complete.style.display = "block";
 
 
     }, 50 * time);
