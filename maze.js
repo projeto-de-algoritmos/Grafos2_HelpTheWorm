@@ -340,5 +340,40 @@ class Cell {
       this.parentSize / columns - 3
     );
   }
+
+    // Draws each of the cells on the maze canvas
+    show(size, rows, columns) {
+      let x = (this.colNum * size) / columns;
+      let y = (this.rowNum * size) / rows;
+      // console.log(`x =${x}`);
+      // console.log(`y =${y}`);
+      ctx.strokeStyle = "#ffffff";
+      ctx.fillStyle = "black";
+      ctx.lineWidth = 2;
+      if (this.walls.topWall) this.drawTopWall(x, y, size, columns, rows);
+      if (this.walls.rightWall) this.drawRightWall(x, y, size, columns, rows);
+      if (this.walls.bottomWall) this.drawBottomWall(x, y, size, columns, rows);
+      if (this.walls.leftWall) this.drawLeftWall(x, y, size, columns, rows);
+      if (this.visited) {
+        ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+      }
+      if (this.goal) {
+        ctx.fillStyle = "rgb(83, 247, 43)";
+        ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+      }
+  
+      if (this.egg) {
+        ctx.fillStyle = "rgb(123, 123, 123)";
+        ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+      }
+      if (this.egg2) {
+        ctx.fillStyle = "rgb(123, 123, 123)";
+        ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+      }
+      if (this.egg3) {
+        ctx.fillStyle = "rgb(123, 123, 123)";
+        ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+      }
+    }
 }
 
