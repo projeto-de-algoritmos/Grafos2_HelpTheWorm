@@ -108,7 +108,7 @@ class Maze {
       generationComplete = true;
       if (first === false) {
         first = true;
-       
+        djikstra(this.columns);
       }
 
       return;
