@@ -96,7 +96,7 @@ function djikstra(rowsCols) {
 
   }
 
-
+  moveBlock(path);
 
 }
 
@@ -225,6 +225,54 @@ class WeightedGraph {
   }
 }
 
+function moveBlock(path) {
+  if (!generationComplete) return;
+  let row = current.rowNum;
+  let col = current.colNum;
+
+  for (let i = 1; i < path.length; i++) {
+
+    setTimeout(function () {
+      ii = position_i(path[i]);
+      jj = position_j(path[i], Number(ii[1]));
+      let next = newMaze.grid[ii[0]][jj];
+      current = next;
+      newMaze.draw();
+      current.highlight(newMaze.columns);
+      if (current.goal) complete.style.display = "block";
 
 
+    }, 50 * time);
+    time++;
 
+  }
+
+}
+
+function position_i(path) {
+
+  let temp = '';
+  let i = 0;
+  while (path[i] != ",") {
+    temp = temp + path[i];
+    console.log("temp0: ", temp)
+    i++;
+  }
+
+  return [Number(temp), i + 1];
+
+}
+
+function position_j(path, i) {
+  let temp = ''
+  let j = i;
+  while (path[j] != undefined) {
+
+    temp = temp + path[j];
+    console.log("temp1: ", temp)
+    j++;
+  }
+
+  return Number(temp);
+
+}
