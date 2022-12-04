@@ -16,7 +16,17 @@ class Node {
   }
 }
 
+function randomNumber(min, max) {
+  let let_x = Math.floor(Math.random() * max);
+  let let_y = Math.floor(Math.random() * max);
+  console.log("RANDOM NUMBER: ", let_x, let_y);
+  if (let_x === 0 && let_y === 0 || let_x === max && let_y === max) {
+    return randomNumber(min, max)
 
+  }
+  else
+    return [let_x, let_y];
+}
 
 class Maze {
   constructor(size, rows, columns) {
@@ -31,7 +41,7 @@ class Maze {
 
 
 
-
+ 
 }
 
 class Cell {
