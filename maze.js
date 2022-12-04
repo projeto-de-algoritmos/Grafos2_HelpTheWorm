@@ -1,227 +1,126 @@
-let form = document.querySelector("#settings");
-let size = document.querySelector("#size");
-let rowsCols = document.querySelector("#number");
-let complete = document.querySelector(".complete");
-let replay = document.querySelector(".replay");
-let close = document.querySelector(".close");
+// DEPTH FIRST SEARCH MAZE IMPLEMENTATION IN JAVASCRIPT BY CONOR BAILEY
 
-let newMaze;
-let newdjikstra;
-let time = 0;
-let pos = ['a',]
+// Initialize the canvas
+let maze = document.querySelector(".maze");
+let ctx = maze.getContext("2d");
+let generationComplete = false;
 
-form.addEventListener("submit", generateMaze);
-replay.addEventListener("click", () => {
-  location.reload();
-});
+let current;
+let goal;
+let first = false;
 
-close.addEventListener("click", () => {
-  complete.style.display = "none";
-});
-
-function generateMaze(e) {
-  e.preventDefault();
-
-  if (rowsCols.value == "" || size.value == "") {
-    return alert("Please enter all fields");
-  }
-
-  let mazeSize = size.value;
-  let number = rowsCols.value;
-  if (mazeSize > 600 || number > 50) {
-    alert("Maze too large!");
-    return;
-  }
-
-  form.style.display = "none";
-
-  newMaze = new Maze(mazeSize, number, number);
-  newMaze.setup();
-  newMaze.draw();
-
-}
-
-function djikstra(rowsCols) {
-  var graph = new WeightedGraph();
-
-  for (var i = 0; i < rowsCols; i++) {
-    for (var j = 0; j < rowsCols; j++) {
-      graph.addVertex(`${i},${j}`);
-    }
-  }
-
-  for (var i = 0; i < rowsCols; i++) {
-    for (var j = 0; j < rowsCols; j++) {
-
-      if (!newMaze.grid[i][j].walls.bottomWall) {
-        graph.addEdge(`${i},${j}`, `${i + 1},${j}`, 1);
-        // console.log("bottom: ", `${i},${j}`, `${i + 1},${j}`);
-      }
-      if (!newMaze.grid[i][j].walls.rightWall) {
-        graph.addEdge(`${i},${j}`, `${i},${j + 1}`, 1);
-        // console.log("right: ", `${i},${j}`, `${i},${j + 1}`);
-      }
-      if (!newMaze.grid[i][j].walls.leftWall) {
-        graph.addEdge(`${i},${j}`, `${i},${j - 1}`, 1);
-        // console.log("left: ", `${i},${j}`, `${i},${j - 1}`);
-      }
-      if (!newMaze.grid[i][j].walls.topWall) {
-        graph.addEdge(`${i},${j}`, `${i - 1},${j}`, 1);
-        // console.log("top:", `${i},${j}`, `${i - 1},${j}`);
-      }
-    }
-  }
-
-  console.log("topWall: ", newMaze);
-
-  const result = permutator([0, 1, 2])
-
-  let a, b, c, d, path, temp = 0, pos;
-  for (var i = 0; i < 6; i++) {
-    a = graph.Dijkstra(`${0},${0}`, `${newMaze.res_egg[result[i][0]][0]},${newMaze.res_egg[result[i][0]][1]}`);
-    b = graph.Dijkstra(`${a[a.length - 1]}`, `${newMaze.res_egg[result[i][1]][0]},${newMaze.res_egg[result[i][1]][1]}`)
-    c = graph.Dijkstra(`${b[b.length - 1]}`, `${newMaze.res_egg[result[i][2]][0]},${newMaze.res_egg[result[i][2]][1]}`)
-    d = graph.Dijkstra(`${c[c.length - 1]}`, `${rowsCols - 1},${rowsCols - 1}`)
-    b.shift();
-    c.shift();
-    d.shift();
-    pos = a.concat(b, c, d);
-    console.log("tamanho: ", pos);
-    if (pos.length < temp || temp == 0) {
-      console.log("é menor: ", pos.length);
-      console.log("temp: ", temp);
-      temp = pos.length;
-      path = pos;
-    }
-
-  }
-
-
-
-}
-
-class PriorityQueue {
-  constructor() {
-    this.values = [];
-  }
-  enqueue(val, priority) {
-    let newNode = new Node(val, priority);
-    this.values.push(newNode);
-    this.bubbleUp();
-  }
-  bubbleUp() {
-    let idx = this.values.length - 1;
-    const element = this.values[idx];
-    while (idx > 0) {
-      let parentIdx = Math.floor((idx - 1) / 2);
-      let parent = this.values[parentIdx];
-      if (element.priority >= parent.priority) break;
-      this.values[parentIdx] = element;
-      this.values[idx] = parent;
-      idx = parentIdx;
-    }
-  }
-  dequeue() {
-    const min = this.values[0];
-    const end = this.values.pop();
-    if (this.values.length > 0) {
-      this.values[0] = end;
-      this.sinkDown();
-    }
-    return min;
-  }
-  sinkDown() {
-    let idx = 0;
-    const length = this.values.length;
-    const element = this.values[0];
-    while (true) {
-      let leftChildIdx = 2 * idx + 1;
-      let rightChildIdx = 2 * idx + 2;
-      let leftChild, rightChild;
-      let swap = null;
-
-      if (leftChildIdx < length) {
-        leftChild = this.values[leftChildIdx];
-        if (leftChild.priority < element.priority) {
-          swap = leftChildIdx;
-        }
-      }
-      if (rightChildIdx < length) {
-        rightChild = this.values[rightChildIdx];
-        if (
-          (swap === null && rightChild.priority < element.priority) ||
-          (swap !== null && rightChild.priority < leftChild.priority)
-        ) {
-          swap = rightChildIdx;
-        }
-      }
-      if (swap === null) break;
-      this.values[idx] = this.values[swap];
-      this.values[swap] = element;
-      idx = swap;
-    }
+class Node {
+  constructor(val, priority) {
+    this.val = val;
+    this.priority = priority;
   }
 }
 
-class WeightedGraph {
-  constructor() {
-    this.adjacencyList = {};
+function randomNumber(min, max) {
+  let let_x = Math.floor(Math.random() * max);
+  let let_y = Math.floor(Math.random() * max);
+  console.log("RANDOM NUMBER: ", let_x, let_y);
+  if (let_x === 0 && let_y === 0 || let_x === max && let_y === max) {
+    return randomNumber(min, max)
+
   }
-  addVertex(vertex) {
-    if (!this.adjacencyList[vertex]) this.adjacencyList[vertex] = [];
+  else
+    return [let_x, let_y];
+}
+
+class Maze {
+  constructor(size, rows, columns) {
+    this.size = size;
+    this.columns = columns;
+    this.rows = rows;
+    this.grid = [];
+    this.stack = [];
+    this.res_egg = [];
+
   }
-  addEdge(vertex1, vertex2, weight) {
-    this.adjacencyList[vertex1].push({ node: vertex2, weight });
-    this.adjacencyList[vertex2].push({ node: vertex1, weight });
-  }
-  Dijkstra(start, finish) {
-    const nodes = new PriorityQueue();
-    const distances = {};
-    const previous = {};
-    let path = []; //to return at end
-    let smallest; newdjikstra;
-    //build up initial state
-    for (let vertex in this.adjacencyList) {
-      if (vertex === start) {
-        distances[vertex] = 0;
-        nodes.enqueue(vertex, 0);
-      } else {
-        distances[vertex] = Infinity;
-        nodes.enqueue(vertex, Infinity);
+
+  // Set the grid: Create new this.grid array based on number of instance rows and columns
+  setup() {
+    for (let r = 0; r < this.rows; r++) {
+      let row = [];
+      for (let c = 0; c < this.columns; c++) {
+        // Create a new instance of the Cell class for each element in the 2D array and push to the maze grid array
+        let cell = new Cell(r, c, this.grid, this.size);
+        row.push(cell);
       }
-      previous[vertex] = null;
+      this.grid.push(row);
     }
-    // as long as there is something to visit
-    while (nodes.values.length) {
-      smallest = nodes.dequeue().val;
-      if (smallest === finish) {
-        //WE ARE DONE
-        //BUILD UP PATH TO RETURN AT END
-        while (previous[smallest]) {
-          path.push(smallest);
-          smallest = previous[smallest];
-        }
-        break;
-      }
-      if (smallest || distances[smallest] !== Infinity) {
-        for (let neighbor in this.adjacencyList[smallest]) {
-          //find neighboring node
-          let nextNode = this.adjacencyList[smallest][neighbor];
-          //calculate new distance to neighboring node
-          let candidate = distances[smallest] + nextNode.weight;
-          let nextNeighbor = nextNode.node;
-          if (candidate < distances[nextNeighbor]) {
-            //updating new smallest distance to neighbor
-            distances[nextNeighbor] = candidate;
-            //updating previous - How we got to neighbor
-            previous[nextNeighbor] = smallest;
-            //enqueue in priority queue with new priority
-            nodes.enqueue(nextNeighbor, candidate);
-          }
-        }
+    // Set the starting grid
+    current = this.grid[0][0];
+    this.grid[this.rows - 1][this.columns - 1].goal = true;
+
+
+    this.res_egg[0] = randomNumber(0, this.rows - 1);
+    console.log("res_egg: ", this.res_egg[0]);
+    this.grid[this.res_egg[0][0]][this.res_egg[0][1]].egg = true;
+    this.res_egg[1] = randomNumber(0, this.rows - 1);
+    console.log("res_egg2: ", this.res_egg[1]);
+    this.grid[this.res_egg[1][0]][this.res_egg[1][1]].egg2 = true;
+    this.res_egg[2] = randomNumber(0, this.rows - 1);
+    console.log("res_egg3: ", this.res_egg[2]);
+    this.grid[this.res_egg[2][0]][this.res_egg[2][1]].egg3 = true;
+  }
+
+  // Draw the canvas by setting the size and placing the cells in the grid array on the canvas.
+  draw() {
+    maze.width = this.size;
+    maze.height = this.size;
+    maze.style.background = "black";
+    // Set the first cell as visited
+    console.log("current: ", current);
+    current.visited = true;
+    // Loop through the 2d grid array and call the show method for each cell instance
+    for (let r = 0; r < this.rows; r++) {
+      for (let c = 0; c < this.columns; c++) {
+        let grid = this.grid;
+        grid[r][c].show(this.size, this.rows, this.columns);
       }
     }
-    return path.concat(smallest).reverse();
+    // This function will assign the variable 'next' to random cell out of the current cells available neighbouting cells
+    let next = current.checkNeighbours();
+    // If there is a non visited neighbour cell
+    console.log("next: ", next);
+    if (next) {
+      next.visited = true;
+      // Add the current cell to the stack for backtracking
+      this.stack.push(current);
+      // this function will highlight the current cell on the grid. The parameter columns is passed
+      // in order to set the size of the cell
+      current.highlight(this.columns);
+      // This function compares the current cell to the next cell and removes the relevant walls for each cell
+      current.removeWalls(current, next);
+      // Set the nect cell to the current cell
+      current = next;
+
+      // Else if there are no available neighbours start backtracking using the stack
+    } else if (this.stack.length > 0) {
+      let cell = this.stack.pop();
+      current = cell;
+      current.highlight(this.columns);
+    }
+    // If no more items in the stack then all cells have been visted and the function can be exited
+    if (this.stack.length === 0) {
+      generationComplete = true;
+      if (first === false) {
+        first = true;
+        djikstra(this.columns);
+      }
+
+      return;
+    }
+
+    // Recursively call the draw function. This will be called up until the stack is empty
+    window.requestAnimationFrame(() => {
+      this.draw();
+    });
+    //     setTimeout(() => {rd
+    //       this.draw();
+    //     }, 10);
   }
 }
 
@@ -298,36 +197,36 @@ class Cell {
     }
   }
 
-    // Wall drawing functions for each cell. Will be called if relevent wall is set to true in cell constructor
-    drawTopWall(x, y, size, columns, rows) {
-      ctx.beginPath();
-      ctx.moveTo(x, y);
-      ctx.lineTo(x + size / columns, y);
-      ctx.stroke();
-    }
-  
-    drawRightWall(x, y, size, columns, rows) {
-      ctx.beginPath();
-      ctx.moveTo(x + size / columns, y);
-      ctx.lineTo(x + size / columns, y + size / rows);
-      ctx.stroke();
-    }
-  
-    drawBottomWall(x, y, size, columns, rows) {
-      ctx.beginPath();
-      ctx.moveTo(x, y + size / rows);
-      ctx.lineTo(x + size / columns, y + size / rows);
-      ctx.stroke();
-    }
-  
-    drawLeftWall(x, y, size, columns, rows) {
-      ctx.beginPath();
-      ctx.moveTo(x, y);
-      ctx.lineTo(x, y + size / rows);
-      ctx.stroke();
-    }
+  // Wall drawing functions for each cell. Will be called if relevent wall is set to true in cell constructor
+  drawTopWall(x, y, size, columns, rows) {
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + size / columns, y);
+    ctx.stroke();
+  }
 
-      // Highlights the current cell on the grid. Columns is once again passed in to set the size of the grid.
+  drawRightWall(x, y, size, columns, rows) {
+    ctx.beginPath();
+    ctx.moveTo(x + size / columns, y);
+    ctx.lineTo(x + size / columns, y + size / rows);
+    ctx.stroke();
+  }
+
+  drawBottomWall(x, y, size, columns, rows) {
+    ctx.beginPath();
+    ctx.moveTo(x, y + size / rows);
+    ctx.lineTo(x + size / columns, y + size / rows);
+    ctx.stroke();
+  }
+
+  drawLeftWall(x, y, size, columns, rows) {
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x, y + size / rows);
+    ctx.stroke();
+  }
+
+  // Highlights the current cell on the grid. Columns is once again passed in to set the size of the grid.
   highlight(columns) {
     // Additions and subtractions added so the highlighted cell does cover the walls
     let x = (this.colNum * this.parentSize) / columns + 1;
@@ -341,39 +240,44 @@ class Cell {
     );
   }
 
-    // Draws each of the cells on the maze canvas
-    show(size, rows, columns) {
-      let x = (this.colNum * size) / columns;
-      let y = (this.rowNum * size) / rows;
-      // console.log(`x =${x}`);
-      // console.log(`y =${y}`);
-      ctx.strokeStyle = "#ffffff";
-      ctx.fillStyle = "black";
-      ctx.lineWidth = 2;
-      if (this.walls.topWall) this.drawTopWall(x, y, size, columns, rows);
-      if (this.walls.rightWall) this.drawRightWall(x, y, size, columns, rows);
-      if (this.walls.bottomWall) this.drawBottomWall(x, y, size, columns, rows);
-      if (this.walls.leftWall) this.drawLeftWall(x, y, size, columns, rows);
-      if (this.visited) {
-        ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      }
-      if (this.goal) {
-        ctx.fillStyle = "rgb(83, 247, 43)";
-        ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      }
-  
-      if (this.egg) {
-        ctx.fillStyle = "rgb(123, 123, 123)";
-        ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      }
-      if (this.egg2) {
-        ctx.fillStyle = "rgb(123, 123, 123)";
-        ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      }
-      if (this.egg3) {
-        ctx.fillStyle = "rgb(123, 123, 123)";
-        ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      }
+
+
+  // Draws each of the cells on the maze canvas
+  show(size, rows, columns) {
+    let x = (this.colNum * size) / columns;
+    let y = (this.rowNum * size) / rows;
+    // console.log(`x =${x}`);
+    // console.log(`y =${y}`);
+    ctx.strokeStyle = "#ffffff";
+    ctx.fillStyle = "black";
+    ctx.lineWidth = 2;
+    if (this.walls.topWall) this.drawTopWall(x, y, size, columns, rows);
+    if (this.walls.rightWall) this.drawRightWall(x, y, size, columns, rows);
+    if (this.walls.bottomWall) this.drawBottomWall(x, y, size, columns, rows);
+    if (this.walls.leftWall) this.drawLeftWall(x, y, size, columns, rows);
+    if (this.visited) {
+      ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
     }
+    if (this.goal) {
+      ctx.fillStyle = "rgb(83, 247, 43)";
+      ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+    }
+
+    if (this.egg) {
+      ctx.fillStyle = "rgb(123, 123, 123)";
+      ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+    }
+    if (this.egg2) {
+      ctx.fillStyle = "rgb(123, 123, 123)";
+      ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+    }
+    if (this.egg3) {
+      ctx.fillStyle = "rgb(123, 123, 123)";
+      ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+    }
+  }
 }
 
+// let newMaze = new Maze(600, 50, 50);
+// newMaze.setup();
+// newMaze.draw();

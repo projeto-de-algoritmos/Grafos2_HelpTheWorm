@@ -11,6 +11,7 @@ let time = 0;
 let pos = ['a',]
 
 form.addEventListener("submit", generateMaze);
+document.addEventListener("keydown", move);
 replay.addEventListener("click", () => {
   location.reload();
 });
@@ -40,6 +41,19 @@ function generateMaze(e) {
   newMaze.draw();
 
 }
+
+// function allpossible(arr) {
+//   var result = [];
+//   for (var i = 0; i < arr.length; i++) {
+//     var first = arr[i];
+//     var rest = arr.slice(0, i).concat(arr.slice(i + 1));
+//     var innerPermutations = allpossible(rest);
+//     for (var j = 0; j < innerPermutations.length; j++) {
+//       result.push(first.concat(innerPermutations[j]));
+//     }
+//   }
+//   return result;
+// }
 
 const permutator = (inputArr) => {
   let result = [];
@@ -247,6 +261,56 @@ class WeightedGraph {
   }
 }
 
+function move(e) {
+  if (!generationComplete) return;
+  let key = e.key;
+  let row = current.rowNum;
+  let col = current.colNum;
+
+  switch (key) {
+    case "ArrowUp":
+      if (!current.walls.topWall) {
+        let next = newMaze.grid[row - 1][col];
+        current = next;
+        newMaze.draw();
+        current.highlight(newMaze.columns);
+        // not required if goal is in bottom right
+        if (current.goal) complete.style.display = "block";
+      }
+      break;
+
+    case "ArrowRight":
+      if (!current.walls.rightWall) {
+        let next = newMaze.grid[row][col + 1];
+        current = next;
+        newMaze.draw();
+        current.highlight(newMaze.columns);
+        if (current.goal) complete.style.display = "block";
+      }
+      break;
+
+    case "ArrowDown":
+      if (!current.walls.bottomWall) {
+        let next = newMaze.grid[row + 1][col];
+        current = next;
+        newMaze.draw();
+        current.highlight(newMaze.columns);
+        if (current.goal) complete.style.display = "block";
+      }
+      break;
+
+    case "ArrowLeft":
+      if (!current.walls.leftWall) {
+        let next = newMaze.grid[row][col - 1];
+        current = next;
+        newMaze.draw();
+        current.highlight(newMaze.columns);
+        // not required if goal is in bottom right
+        if (current.goal) complete.style.display = "block";
+      }
+      break;
+  }
+}
 
 function moveBlock(path) {
   if (!generationComplete) return;
