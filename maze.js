@@ -66,7 +66,62 @@ class Maze {
     this.grid[this.res_egg[2][0]][this.res_egg[2][1]].egg3 = true;
   }
 
- 
+  // Draw the canvas by setting the size and placing the cells in the grid array on the canvas.
+  draw() {
+    maze.width = this.size;
+    maze.height = this.size;
+    maze.style.background = "black";
+    // Set the first cell as visited
+    console.log("current: ", current);
+    current.visited = true;
+    // Loop through the 2d grid array and call the show method for each cell instance
+    for (let r = 0; r < this.rows; r++) {
+      for (let c = 0; c < this.columns; c++) {
+        let grid = this.grid;
+        grid[r][c].show(this.size, this.rows, this.columns);
+      }
+    }
+    // This function will assign the variable 'next' to random cell out of the current cells available neighbouting cells
+    let next = current.checkNeighbours();
+    // If there is a non visited neighbour cell
+    console.log("next: ", next);
+    if (next) {
+      next.visited = true;
+      // Add the current cell to the stack for backtracking
+      this.stack.push(current);
+      // this function will highlight the current cell on the grid. The parameter columns is passed
+      // in order to set the size of the cell
+      current.highlight(this.columns);
+      // This function compares the current cell to the next cell and removes the relevant walls for each cell
+      current.removeWalls(current, next);
+      // Set the nect cell to the current cell
+      current = next;
+
+      // Else if there are no available neighbours start backtracking using the stack
+    } else if (this.stack.length > 0) {
+      let cell = this.stack.pop();
+      current = cell;
+      current.highlight(this.columns);
+    }
+    // If no more items in the stack then all cells have been visted and the function can be exited
+    if (this.stack.length === 0) {
+      generationComplete = true;
+      if (first === false) {
+        first = true;
+       
+      }
+
+      return;
+    }
+
+    // Recursively call the draw function. This will be called up until the stack is empty
+    window.requestAnimationFrame(() => {
+      this.draw();
+    });
+    //     setTimeout(() => {rd
+    //       this.draw();
+    //     }, 10);
+  }
 }
 
 class Cell {
