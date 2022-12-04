@@ -326,5 +326,19 @@ class Cell {
       ctx.lineTo(x, y + size / rows);
       ctx.stroke();
     }
+
+      // Highlights the current cell on the grid. Columns is once again passed in to set the size of the grid.
+  highlight(columns) {
+    // Additions and subtractions added so the highlighted cell does cover the walls
+    let x = (this.colNum * this.parentSize) / columns + 1;
+    let y = (this.rowNum * this.parentSize) / columns + 1;
+    ctx.fillStyle = "purple";
+    ctx.fillRect(
+      x,
+      y,
+      this.parentSize / columns - 3,
+      this.parentSize / columns - 3
+    );
+  }
 }
 
