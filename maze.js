@@ -6,7 +6,7 @@ let ctx = maze.getContext("2d");
 let generationComplete = false;
 
 const worm = new Image();
-worm.addEventListener('load', ()=>{console.log("kdkkdwioaijd");}, false)
+worm.addEventListener("load", () => {}, false);
 worm.src = "./assets/imgs/worm.png";
 
 let current;
@@ -257,43 +257,40 @@ class Cell {
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
     }
     if (this.goal) {
-      ctx.fillStyle = "rgb(83, 247, 43)";
+      ctx.fillStyle = "rgb(183, 247, 43)";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
     }
 
     if (this.egg[0]) {
       ctx.fillStyle = "rgb(123, 123, 123)";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      ctx.drawImage(worm, x + 1,  y + 1, 50, 50);
+      ctx.drawImage(worm, x + 1,  y + 1,(size / columns - 2), (size / columns - 2));
     }
     if (this.egg[1]) {
       ctx.fillStyle = "rgb(123, 123, 123)";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      ctx.drawImage(worm, x + 1,  y + 1, 50, 50);
+      ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
     }
     if (this.egg[2]) {
       ctx.fillStyle = "rgb(123, 123, 123)";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      ctx.drawImage(worm, x + 1,  y + 1, 50, 50);
+      ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
     }
 
     if (this.egg[0] == 3) {
       ctx.fillStyle = "pink";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      ctx.drawImage(worm, x + 1,  y + 1, 50, 50);
-
+      ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
     }
     if (this.egg[1] == 3) {
       ctx.fillStyle = "pink";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      ctx.drawImage(worm, x + 1,  y + 1, 50, 50);
-
+      ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
     }
     if (this.egg[2] == 3) {
       ctx.fillStyle = "pink";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      ctx.drawImage(worm, x + 1,  y + 1, 50, 50);
-
+      ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
     }
   }
 }
