@@ -75,19 +75,19 @@ function djikstra(rowsCols) {
   for (var i = 0; i < rowsCols; i++) {
     for (var j = 0; j < rowsCols; j++) {
       if (!newMaze.grid[i][j].walls.bottomWall) {
-        graph.addEdge(`${i},${j}`, `${i + 1},${j}`, 2);
+        graph.addEdge(`${i},${j}`, `${i + 1},${j}`, 3);
         // console.log("bottom: ", `${i},${j}`, `${i + 1},${j}`);
       }
       if (!newMaze.grid[i][j].walls.rightWall) {
-        graph.addEdge(`${i},${j}`, `${i},${j + 1}`, 2);
+        graph.addEdge(`${i},${j}`, `${i},${j + 1}`, 3);
         // console.log("right: ", `${i},${j}`, `${i},${j + 1}`);
       }
       if (!newMaze.grid[i][j].walls.leftWall) {
-        graph.addEdge(`${i},${j}`, `${i},${j - 1}`, 2);
+        graph.addEdge(`${i},${j}`, `${i},${j - 1}`, 3);
         // console.log("left: ", `${i},${j}`, `${i},${j - 1}`);
       }
       if (!newMaze.grid[i][j].walls.topWall) {
-        graph.addEdge(`${i},${j}`, `${i - 1},${j}`, 2);
+        graph.addEdge(`${i},${j}`, `${i - 1},${j}`, 3);
         // console.log("top:", `${i},${j}`, `${i - 1},${j}`);
       }
     }
