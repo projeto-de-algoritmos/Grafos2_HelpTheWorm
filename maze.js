@@ -5,6 +5,10 @@ let maze = document.querySelector(".maze");
 let ctx = maze.getContext("2d");
 let generationComplete = false;
 
+const worm = new Image();
+worm.addEventListener('load', ()=>{console.log("kdkkdwioaijd");}, false)
+worm.src = "./assets/imgs/worm.png";
+
 let current;
 let goal;
 let first = false;
@@ -20,12 +24,9 @@ function randomNumber(min, max) {
   let let_x = Math.floor(Math.random() * max);
   let let_y = Math.floor(Math.random() * max);
   console.log("RANDOM NUMBER: ", let_x, let_y);
-  if (let_x === 0 && let_y === 0 || let_x === max && let_y === max) {
-    return randomNumber(min, max)
-
-  }
-  else
-    return [let_x, let_y];
+  if ((let_x === 0 && let_y === 0) || (let_x === max && let_y === max)) {
+    return randomNumber(min, max);
+  } else return [let_x, let_y];
 }
 
 class Maze {
@@ -36,7 +37,6 @@ class Maze {
     this.grid = [];
     this.stack = [];
     this.res_egg = [];
-
   }
 
   // Set the grid: Create new this.grid array based on number of instance rows and columns
@@ -54,7 +54,6 @@ class Maze {
     current = this.grid[0][0];
     this.grid[this.rows - 1][this.columns - 1].goal = true;
 
-
     this.res_egg[0] = randomNumber(0, this.rows - 1);
     console.log("res_egg: ", this.res_egg[0]);
     this.grid[this.res_egg[0][0]][this.res_egg[0][1]].egg[0] = true;
@@ -65,8 +64,6 @@ class Maze {
     console.log("res_egg3: ", this.res_egg[2]);
     this.grid[this.res_egg[2][0]][this.res_egg[2][1]].egg[2] = true;
   }
-
-  
 
   // Draw the canvas by setting the size and placing the cells in the grid array on the canvas.
   draw() {
@@ -228,7 +225,7 @@ class Cell {
   }
 
   // Highlights the current cell on the grid. Columns is once again passed in to set the size of the grid.
-  highlight(columns) { 
+  highlight(columns) {
     // Additions and subtractions added so the highlighted cell does cover the walls
     let x = (this.colNum * this.parentSize) / columns + 1;
     let y = (this.rowNum * this.parentSize) / columns + 1;
@@ -267,27 +264,36 @@ class Cell {
     if (this.egg[0]) {
       ctx.fillStyle = "rgb(123, 123, 123)";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+      ctx.drawImage(worm, x + 1,  y + 1, 50, 50);
     }
     if (this.egg[1]) {
       ctx.fillStyle = "rgb(123, 123, 123)";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+      ctx.drawImage(worm, x + 1,  y + 1, 50, 50);
     }
     if (this.egg[2]) {
       ctx.fillStyle = "rgb(123, 123, 123)";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+      ctx.drawImage(worm, x + 1,  y + 1, 50, 50);
     }
 
     if (this.egg[0] == 3) {
-      ctx.fillStyle = "pink"
+      ctx.fillStyle = "pink";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+      ctx.drawImage(worm, x + 1,  y + 1, 50, 50);
+
     }
     if (this.egg[1] == 3) {
       ctx.fillStyle = "pink";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+      ctx.drawImage(worm, x + 1,  y + 1, 50, 50);
+
     }
     if (this.egg[2] == 3) {
       ctx.fillStyle = "pink";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+      ctx.drawImage(worm, x + 1,  y + 1, 50, 50);
+
     }
   }
 }
