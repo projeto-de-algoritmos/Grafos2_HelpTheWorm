@@ -13,9 +13,22 @@ const boostpng = new Image();
 boostpng.addEventListener("load", () => {}, false);
 boostpng.src = "./assets/imgs/boost.png";
 
+const mother = new Image();
+mother.addEventListener("load", () => {}, false);
+mother.src = "./assets/imgs/worriedmother.png";
+
+const happymother = new Image();
+happymother.addEventListener("load", () => {}, false);
+happymother.src = "./assets/imgs/motherhappy.png";
+
+const wormrole = new Image();
+wormrole.addEventListener("load", () => {}, false);
+wormrole.src = "./assets/imgs/wormrole.jpeg";
+
 let current;
 let goal;
 let first = false;
+let visitedworms = [false, false, false];
 
 class Node {
   constructor(val, priority) {
@@ -41,7 +54,7 @@ class Maze {
     this.grid = [];
     this.stack = [];
     this.res_egg = [];
-    this.boost = []
+    this.boost = [];
   }
 
   // Set the grid: Create new this.grid array based on number of instance rows and columns
@@ -77,7 +90,7 @@ class Maze {
   draw() {
     maze.width = this.size;
     maze.height = this.size;
-    maze.style.background = "black";
+    maze.style.backgroundImage = "url('./assets/imgs/grass.jpeg')";
     // Set the first cell as visited
     console.log("currentssss: ", current);
     current.visited = true;
@@ -239,14 +252,35 @@ class Cell {
     let y = (this.rowNum * this.parentSize) / columns + 1;
     console.log("x: ", x);
     console.log("y: ", y);
-    ctx.fillStyle = "purple";
+    ctx.fillStyle = "transparent";
     ctx.fillRect(
       x,
       y,
       this.parentSize / columns - 3,
       this.parentSize / columns - 3
     );
-
+    ctx.drawImage(
+      mother,
+      x,
+      y,
+      this.parentSize / columns - 3,
+      this.parentSize / columns - 3
+    );
+    if (visitedworms[0] && visitedworms[1] && visitedworms[2]) {
+      ctx.clearRect(
+        x,
+        y,
+        this.parentSize / columns - 3,
+        this.parentSize / columns - 3
+      );
+      ctx.drawImage(
+        happymother,
+        x,
+        y,
+        this.parentSize / columns - 3,
+        this.parentSize / columns - 3
+      );
+    }
   }
 
   // Draws each of the cells on the maze canvas
@@ -254,7 +288,7 @@ class Cell {
     let x = (this.colNum * size) / columns;
     let y = (this.rowNum * size) / rows;
     ctx.strokeStyle = "#ffffff";
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "transparent";
     ctx.lineWidth = 2;
     if (this.walls.topWall) this.drawTopWall(x, y, size, columns, rows);
     if (this.walls.rightWall) this.drawRightWall(x, y, size, columns, rows);
@@ -264,43 +298,51 @@ class Cell {
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
     }
     if (this.goal) {
-      ctx.fillStyle = "rgb(183, 247, 43)";
+      ctx.fillStyle = "transparent";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+      ctx.drawImage(wormrole, x + 1, y + 1, size / columns - 2, size / columns - 2);
+
     }
 
     if (this.egg[0]) {
-      ctx.fillStyle = "rgb(123, 123, 123)";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      ctx.drawImage(worm, x + 1,  y + 1,(size / columns - 2), (size / columns - 2));
+      ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
     }
     if (this.egg[1]) {
-      ctx.fillStyle = "rgb(123, 123, 123)";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
       ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
     }
     if (this.egg[2]) {
-      ctx.fillStyle = "rgb(123, 123, 123)";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
       ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
     }
     if (this.egg[3]) {
-      ctx.drawImage(boostpng, x + 1, y + 1, size / columns - 2, size / columns - 2);
+      ctx.drawImage(
+        boostpng,
+        x + 1,
+        y + 1,
+        size / columns - 2,
+        size / columns - 2
+      );
     }
 
     if (this.egg[0] == 3) {
-      ctx.fillStyle = "pink";
-      ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
+      ctx.fillStyle = "transparent";
+      ctx.clearRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+      // ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
+      visitedworms[0] = true;
     }
     if (this.egg[1] == 3) {
-      ctx.fillStyle = "pink";
-      ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
+      ctx.fillStyle = "transparent";
+      ctx.clearRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+      // ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
+      visitedworms[1] = true;
     }
     if (this.egg[2] == 3) {
-      ctx.fillStyle = "pink";
-      ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
+      ctx.fillStyle = "";
+      ctx.clearRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+      // ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
+      visitedworms[2] = true;
     }
   }
 }

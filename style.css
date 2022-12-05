@@ -10,6 +10,9 @@ body {
   background-color: #fbf9f9;
 }
 
+h3 {
+  margin-bottom: 20px;
+}
 .maze {
   position: absolute;
   left: 50%;
