@@ -9,6 +9,10 @@ const worm = new Image();
 worm.addEventListener("load", () => {}, false);
 worm.src = "./assets/imgs/worm.png";
 
+const boostpng = new Image();
+boostpng.addEventListener("load", () => {}, false);
+boostpng.src = "./assets/imgs/boost.png";
+
 let current;
 let goal;
 let first = false;
@@ -37,6 +41,7 @@ class Maze {
     this.grid = [];
     this.stack = [];
     this.res_egg = [];
+    this.boost = []
   }
 
   // Set the grid: Create new this.grid array based on number of instance rows and columns
@@ -63,6 +68,9 @@ class Maze {
     this.res_egg[2] = randomNumber(0, this.rows - 1);
     console.log("res_egg3: ", this.res_egg[2]);
     this.grid[this.res_egg[2][0]][this.res_egg[2][1]].egg[2] = true;
+    this.res_egg[3] = randomNumber(0, this.rows - 1);
+    console.log("boost: ", this.res_egg[3]);
+    this.grid[this.res_egg[3][0]][this.res_egg[3][1]].egg[3] = true;
   }
 
   // Draw the canvas by setting the size and placing the cells in the grid array on the canvas.
@@ -136,7 +144,7 @@ class Cell {
       leftWall: true,
     };
     this.goal = false;
-    this.egg = [false, false, false];
+    this.egg = [false, false, false, false];
 
     // parentGrid is passed in to enable the checkneighbours method.
     // parentSize is passed in to set the size of each cell on the grid
@@ -238,14 +246,13 @@ class Cell {
       this.parentSize / columns - 3,
       this.parentSize / columns - 3
     );
+
   }
 
   // Draws each of the cells on the maze canvas
   show(size, rows, columns) {
     let x = (this.colNum * size) / columns;
     let y = (this.rowNum * size) / rows;
-    // console.log(`x =${x}`);
-    // console.log(`y =${y}`);
     ctx.strokeStyle = "#ffffff";
     ctx.fillStyle = "black";
     ctx.lineWidth = 2;
@@ -275,6 +282,9 @@ class Cell {
       ctx.fillStyle = "rgb(123, 123, 123)";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
       ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
+    }
+    if (this.egg[3]) {
+      ctx.drawImage(boostpng, x + 1, y + 1, size / columns - 2, size / columns - 2);
     }
 
     if (this.egg[0] == 3) {

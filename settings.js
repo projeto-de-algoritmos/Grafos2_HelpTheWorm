@@ -7,8 +7,9 @@ let close = document.querySelector(".close");
 
 let newMaze;
 let newdjikstra;
-let time = 0;
-let pos = ['a',]
+let time = 1;
+let speed = 500;
+let pos = ["a"];
 let cont = 0;
 
 form.addEventListener("submit", generateMaze);
@@ -40,7 +41,6 @@ function generateMaze(e) {
   newMaze = new Maze(mazeSize, number, number);
   newMaze.setup();
   newMaze.draw();
-
 }
 
 const permutator = (inputArr) => {
@@ -48,20 +48,20 @@ const permutator = (inputArr) => {
 
   const permute = (arr, m = []) => {
     if (arr.length === 0) {
-      result.push(m)
+      result.push(m);
     } else {
       for (let i = 0; i < arr.length; i++) {
         let curr = arr.slice();
         let next = curr.splice(i, 1);
-        permute(curr.slice(), m.concat(next))
+        permute(curr.slice(), m.concat(next));
       }
     }
-  }
+  };
 
-  permute(inputArr)
+  permute(inputArr);
 
   return result;
-}
+};
 
 function djikstra(rowsCols) {
   var graph = new WeightedGraph();
@@ -74,7 +74,6 @@ function djikstra(rowsCols) {
 
   for (var i = 0; i < rowsCols; i++) {
     for (var j = 0; j < rowsCols; j++) {
-
       if (!newMaze.grid[i][j].walls.bottomWall) {
         graph.addEdge(`${i},${j}`, `${i + 1},${j}`, 1);
         // console.log("bottom: ", `${i},${j}`, `${i + 1},${j}`);
@@ -96,14 +95,29 @@ function djikstra(rowsCols) {
 
   console.log("topWall: ", newMaze);
 
-  const result = permutator([0, 1, 2])
+  const result = permutator([0, 1, 2]);
 
-  let a, b, c, d, path, temp = 0, pos;
+  let a,
+    b,
+    c,
+    d,
+    path,
+    temp = 0,
+    pos;
   for (var i = 0; i < 6; i++) {
-    a = graph.Dijkstra(`${0},${0}`, `${newMaze.res_egg[result[i][0]][0]},${newMaze.res_egg[result[i][0]][1]}`);
-    b = graph.Dijkstra(`${a[a.length - 1]}`, `${newMaze.res_egg[result[i][1]][0]},${newMaze.res_egg[result[i][1]][1]}`)
-    c = graph.Dijkstra(`${b[b.length - 1]}`, `${newMaze.res_egg[result[i][2]][0]},${newMaze.res_egg[result[i][2]][1]}`)
-    d = graph.Dijkstra(`${c[c.length - 1]}`, `${rowsCols - 1},${rowsCols - 1}`)
+    a = graph.Dijkstra(
+      `${0},${0}`,
+      `${newMaze.res_egg[result[i][0]][0]},${newMaze.res_egg[result[i][0]][1]}`
+    );
+    b = graph.Dijkstra(
+      `${a[a.length - 1]}`,
+      `${newMaze.res_egg[result[i][1]][0]},${newMaze.res_egg[result[i][1]][1]}`
+    );
+    c = graph.Dijkstra(
+      `${b[b.length - 1]}`,
+      `${newMaze.res_egg[result[i][2]][0]},${newMaze.res_egg[result[i][2]][1]}`
+    );
+    d = graph.Dijkstra(`${c[c.length - 1]}`, `${rowsCols - 1},${rowsCols - 1}`);
     b.shift();
     c.shift();
     d.shift();
@@ -115,11 +129,8 @@ function djikstra(rowsCols) {
       temp = pos.length;
       path = pos;
     }
-
   }
-
   moveBlock(path);
-
 }
 
 class PriorityQueue {
@@ -201,7 +212,8 @@ class WeightedGraph {
     const distances = {};
     const previous = {};
     let path = []; //to return at end
-    let smallest; newdjikstra;
+    let smallest;
+    newdjikstra;
     //build up initial state
     for (let vertex in this.adjacencyList) {
       if (vertex === start) {
@@ -304,61 +316,57 @@ function moveBlock(path) {
   let col = current.colNum;
 
   for (let i = 1; i < path.length; i++) {
-   
+    console.log("laco:", i);
+
     setTimeout(function () {
+      if(current.egg[3]){
+        console.log("bost");
+        speed = 1
+      }
       newMaze.draw();
 
       ii = position_i(path[i]);
       jj = position_j(path[i], Number(ii[1]));
       let next = newMaze.grid[ii[0]][jj];
-      // 
+      //
       console.log("current1 ", current);
-      
       current = next;
       newMaze.draw();
       current.highlight(newMaze.columns);
       console.log("current2 ", current);
       for (let i = 0; i < 3; i++) {
-        if (current.egg[i]) {
+        if (current.egg[i] && i < 3) {
           current.egg[i] = 3;
           cont++;
           console.log("cont ", cont);
         }
       }
       if (current.goal && cont >= 3) complete.style.display = "block";
-
-
-    }, 50 * time);
+    }, speed * time);
     time++;
-
   }
-
 }
 
 function position_i(path) {
-
-  let temp = '';
+  let temp = "";
   let i = 0;
   while (path[i] != ",") {
     temp = temp + path[i];
-    console.log("temp0: ", temp)
+    console.log("temp0: ", temp);
     i++;
   }
 
   return [Number(temp), i + 1];
-
 }
 
 function position_j(path, i) {
-  let temp = ''
+  let temp = "";
   let j = i;
   while (path[j] != undefined) {
-
     temp = temp + path[j];
-    console.log("temp1: ", temp)
+    console.log("temp1: ", temp);
     j++;
   }
 
   return Number(temp);
-
 }
