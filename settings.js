@@ -8,7 +8,7 @@ let close = document.querySelector(".close");
 let newMaze;
 let newdjikstra;
 let time = 1;
-let speed = 500;
+let speed = 300;
 let pos = ["a"];
 let cont = 0;
 
