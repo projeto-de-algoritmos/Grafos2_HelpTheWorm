@@ -75,26 +75,34 @@ function djikstra(rowsCols) {
   for (var i = 0; i < rowsCols; i++) {
     for (var j = 0; j < rowsCols; j++) {
       if (!newMaze.grid[i][j].walls.bottomWall) {
-        graph.addEdge(`${i},${j}`, `${i + 1},${j}`, 1);
+        graph.addEdge(`${i},${j}`, `${i + 1},${j}`, 2);
         // console.log("bottom: ", `${i},${j}`, `${i + 1},${j}`);
       }
       if (!newMaze.grid[i][j].walls.rightWall) {
-        graph.addEdge(`${i},${j}`, `${i},${j + 1}`, 1);
+        graph.addEdge(`${i},${j}`, `${i},${j + 1}`, 2);
         // console.log("right: ", `${i},${j}`, `${i},${j + 1}`);
       }
       if (!newMaze.grid[i][j].walls.leftWall) {
-        graph.addEdge(`${i},${j}`, `${i},${j - 1}`, 1);
+        graph.addEdge(`${i},${j}`, `${i},${j - 1}`, 2);
         // console.log("left: ", `${i},${j}`, `${i},${j - 1}`);
       }
       if (!newMaze.grid[i][j].walls.topWall) {
-        graph.addEdge(`${i},${j}`, `${i - 1},${j}`, 1);
+        graph.addEdge(`${i},${j}`, `${i - 1},${j}`, 2);
         // console.log("top:", `${i},${j}`, `${i - 1},${j}`);
       }
     }
   }
 
-  console.log("topWall: ", newMaze);
+  console.log("topWall: ", graph.adjacencyList[`${newMaze.res_egg[3][0]},${newMaze.res_egg[3][1]}`]);
+  for (let i = 0; i < graph.adjacencyList[`${newMaze.res_egg[3][0]},${newMaze.res_egg[3][1]}`].length; i++) {
+    graph.adjacencyList[`${newMaze.res_egg[3][0]},${newMaze.res_egg[3][1]}`][i].weight = 1;
+  }
 
+  for (let i = 0; i < graph.adjacencyList[`${newMaze.res_egg[4][0]},${newMaze.res_egg[4][1]}`].length; i++) {
+    graph.adjacencyList[`${newMaze.res_egg[4][0]},${newMaze.res_egg[4][1]}`][i].weight = 1;
+  }
+  console.log("newMaze: ", newMaze);
+console.log("topWall: ", graph.adjacencyList);
   const result = permutator([0, 1, 2]);
 
   let a,
@@ -130,6 +138,9 @@ function djikstra(rowsCols) {
       path = pos;
     }
   }
+
+  console.log("AAAAAAAAA: ", a);
+  console.log('PATH: ', path)
   moveBlock(path);
 }
 
@@ -310,40 +321,79 @@ function move(e) {
   }
 }
 
-function moveBlock(path) {
+function sleep(ms) {
+  return new Promise(
+    resolve => setTimeout(resolve, ms)
+  );
+}
+
+async function moveBlock(path) {
   if (!generationComplete) return;
   let row = current.rowNum;
   let col = current.colNum;
+  let teste = current.egg[3]
 
   for (let i = 1; i < path.length; i++) {
-    console.log("laco:", i);
 
-    setTimeout(function () {
-      if(current.egg[3]){
-        console.log("bost");
-        speed = 1
-      }
-      newMaze.draw();
 
-      ii = position_i(path[i]);
-      jj = position_j(path[i], Number(ii[1]));
-      let next = newMaze.grid[ii[0]][jj];
-      //
-      console.log("current1 ", current);
-      current = next;
-      newMaze.draw();
-      current.highlight(newMaze.columns);
-      console.log("current2 ", current);
-      for (let i = 0; i < 3; i++) {
-        if (current.egg[i] && i < 3) {
-          current.egg[i] = 3;
-          cont++;
-          console.log("cont ", cont);
-        }
+    if (current.egg[3] === 500) {
+      speed = speed / 2
+      console.log('ENTROU')
+    }
+
+    if (current.egg[4] === 500) {
+      speed = speed / 2
+      console.log('ENTROU')
+    }
+
+    console.log('speed', speed)
+    await sleep(speed);
+    newMaze.draw();
+    ii = position_i(path[i]);
+    jj = position_j(path[i], Number(ii[1]));
+    let next = newMaze.grid[ii[0]][jj];
+    //
+    //console.log("current1 ", current);
+    current = next;
+    newMaze.draw();
+    current.highlight(newMaze.columns);
+    // console.log("current2 ", current);
+    for (let i = 0; i < 3; i++) {
+      if (current.egg[i] && i < 3) {
+        current.egg[i] = 3;
+        cont++;
+        console.log("cont ", cont);
       }
-      if (current.goal && cont >= 3) complete.style.display = "block";
-    }, speed * time);
-    time++;
+    }
+    // setTimeout(function () {
+    //   // if(current.egg[3]){
+    //   //   console.log("bost");
+    //   //   speed = 1
+    //   // }
+    //  console.log('current.egg[3]', current.egg[3]) 
+    //   newMaze.draw();
+
+    //   ii = position_i(path[i]);
+    //   jj = position_j(path[i], Number(ii[1]));
+    //   let next = newMaze.grid[ii[0]][jj];
+    //   //
+    //   //console.log("current1 ", current);
+    //   current = next;
+    //   newMaze.draw();
+    //   current.highlight(newMaze.columns);
+    //  // console.log("current2 ", current);
+    //   for (let i = 0; i < 3; i++) {
+    //     if (current.egg[i] && i < 3) {
+    //       current.egg[i] = 3;
+    //       cont++;
+    //       console.log("cont ", cont);
+    //     }
+    //   }
+    //   if (current.goal && cont >= 3) complete.style.display = "block";
+    // }, ((i + 1) * 1000));
+
+
+
   }
 }
 

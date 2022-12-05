@@ -70,7 +70,11 @@ class Maze {
     this.grid[this.res_egg[2][0]][this.res_egg[2][1]].egg[2] = true;
     this.res_egg[3] = randomNumber(0, this.rows - 1);
     console.log("boost: ", this.res_egg[3]);
-    this.grid[this.res_egg[3][0]][this.res_egg[3][1]].egg[3] = true;
+    this.grid[this.res_egg[3][0]][this.res_egg[3][1]].egg[3] = 500;
+    this.res_egg[4] = randomNumber(0, this.rows - 1);
+    console.log("boost: ", this.res_egg[4]);
+    this.grid[this.res_egg[4][0]][this.res_egg[4][1]].egg[4] = 500;
+
   }
 
   // Draw the canvas by setting the size and placing the cells in the grid array on the canvas.
@@ -144,7 +148,7 @@ class Cell {
       leftWall: true,
     };
     this.goal = false;
-    this.egg = [false, false, false, false];
+    this.egg = [false, false, false, 1000, 1000];
 
     // parentGrid is passed in to enable the checkneighbours method.
     // parentSize is passed in to set the size of each cell on the grid
@@ -283,8 +287,16 @@ class Cell {
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
       ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
     }
-    if (this.egg[3]) {
-      ctx.drawImage(boostpng, x + 1, y + 1, size / columns - 2, size / columns - 2);
+    if (this.egg[3] === 500) {
+      ctx.fillStyle = "rgb(123, 123, 123)";
+      ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+      // ctx.drawImage(boostpng, x + 1, y + 1, size / columns - 2, size / columns - 2);
+    }
+
+    if (this.egg[4] === 500) {
+      ctx.fillStyle = "rgb(1, 123, 123)";
+      ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
+      // ctx.drawImage(boostpng, x + 1, y + 1, size / columns - 2, size / columns - 2);
     }
 
     if (this.egg[0] == 3) {
