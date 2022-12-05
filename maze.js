@@ -321,33 +321,26 @@ class Cell {
       ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
     }
     if (this.egg[3] === 500) {
-      ctx.fillStyle = "rgb(123, 123, 123)";
-      ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      // ctx.drawImage(boostpng, x + 1, y + 1, size / columns - 2, size / columns - 2);
+      ctx.drawImage(boostpng, x + 1, y + 1, size / columns - 2, size / columns - 2);
     }
 
     if (this.egg[4] === 500) {
-      ctx.fillStyle = "rgb(1, 123, 123)";
-      ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      // ctx.drawImage(boostpng, x + 1, y + 1, size / columns - 2, size / columns - 2);
+      ctx.drawImage(boostpng, x + 1, y + 1, size / columns - 2, size / columns - 2);
     }
 
     if (this.egg[0] == 3) {
       ctx.fillStyle = "transparent";
       ctx.clearRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      // ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
       visitedworms[0] = true;
     }
     if (this.egg[1] == 3) {
       ctx.fillStyle = "transparent";
       ctx.clearRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      // ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
       visitedworms[1] = true;
     }
     if (this.egg[2] == 3) {
       ctx.fillStyle = "";
       ctx.clearRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      // ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
       visitedworms[2] = true;
     }
   }

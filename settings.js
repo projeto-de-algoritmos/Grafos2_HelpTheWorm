@@ -8,7 +8,7 @@ let close = document.querySelector(".close");
 let newMaze;
 let newdjikstra;
 let time = 1;
-let speed = 300;
+let speed = 500;
 let pos = ["a"];
 let cont = 0;
 
@@ -338,12 +338,10 @@ async function moveBlock(path) {
 
     if (current.egg[3] === 500) {
       speed = speed / 2
-      console.log('ENTROU')
     }
 
     if (current.egg[4] === 500) {
       speed = speed / 2
-      console.log('ENTROU')
     }
 
     console.log('speed', speed)
@@ -365,34 +363,8 @@ async function moveBlock(path) {
         console.log("cont ", cont);
       }
     }
-    // setTimeout(function () {
-    //   // if(current.egg[3]){
-    //   //   console.log("bost");
-    //   //   speed = 1
-    //   // }
-    //  console.log('current.egg[3]', current.egg[3]) 
-    //   newMaze.draw();
 
-    //   ii = position_i(path[i]);
-    //   jj = position_j(path[i], Number(ii[1]));
-    //   let next = newMaze.grid[ii[0]][jj];
-    //   //
-    //   //console.log("current1 ", current);
-    //   current = next;
-    //   newMaze.draw();
-    //   current.highlight(newMaze.columns);
-    //  // console.log("current2 ", current);
-    //   for (let i = 0; i < 3; i++) {
-    //     if (current.egg[i] && i < 3) {
-    //       current.egg[i] = 3;
-    //       cont++;
-    //       console.log("cont ", cont);
-    //     }
-    //   }
-    //   if (current.goal && cont >= 3) complete.style.display = "block";
-    // }, ((i + 1) * 1000));
-
-
+    if (current.goal && cont >= 3) complete.style.display = "block";
 
   }
 }
