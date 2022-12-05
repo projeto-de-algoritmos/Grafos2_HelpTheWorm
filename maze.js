@@ -1,5 +1,3 @@
-// DEPTH FIRST SEARCH MAZE IMPLEMENTATION IN JAVASCRIPT BY CONOR BAILEY
-
 // Initialize the canvas
 let maze = document.querySelector(".maze");
 let ctx = maze.getContext("2d");
@@ -134,17 +132,12 @@ class Maze {
         first = true;
         djikstra(this.columns);
       }
-
       return;
     }
-
     // Recursively call the draw function. This will be called up until the stack is empty
     window.requestAnimationFrame(() => {
       this.draw();
     });
-    //     setTimeout(() => {rd
-    //       this.draw();
-    //     }, 10);
   }
 }
 

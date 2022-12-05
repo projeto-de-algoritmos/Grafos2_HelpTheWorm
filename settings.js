@@ -76,33 +76,46 @@ function djikstra(rowsCols) {
     for (var j = 0; j < rowsCols; j++) {
       if (!newMaze.grid[i][j].walls.bottomWall) {
         graph.addEdge(`${i},${j}`, `${i + 1},${j}`, 3);
-        // console.log("bottom: ", `${i},${j}`, `${i + 1},${j}`);
       }
       if (!newMaze.grid[i][j].walls.rightWall) {
         graph.addEdge(`${i},${j}`, `${i},${j + 1}`, 3);
-        // console.log("right: ", `${i},${j}`, `${i},${j + 1}`);
       }
       if (!newMaze.grid[i][j].walls.leftWall) {
         graph.addEdge(`${i},${j}`, `${i},${j - 1}`, 3);
-        // console.log("left: ", `${i},${j}`, `${i},${j - 1}`);
       }
       if (!newMaze.grid[i][j].walls.topWall) {
         graph.addEdge(`${i},${j}`, `${i - 1},${j}`, 3);
-        // console.log("top:", `${i},${j}`, `${i - 1},${j}`);
       }
     }
   }
 
-  console.log("topWall: ", graph.adjacencyList[`${newMaze.res_egg[3][0]},${newMaze.res_egg[3][1]}`]);
-  for (let i = 0; i < graph.adjacencyList[`${newMaze.res_egg[3][0]},${newMaze.res_egg[3][1]}`].length; i++) {
-    graph.adjacencyList[`${newMaze.res_egg[3][0]},${newMaze.res_egg[3][1]}`][i].weight = 1;
+  console.log(
+    "topWall: ",
+    graph.adjacencyList[`${newMaze.res_egg[3][0]},${newMaze.res_egg[3][1]}`]
+  );
+  for (
+    let i = 0;
+    i <
+    graph.adjacencyList[`${newMaze.res_egg[3][0]},${newMaze.res_egg[3][1]}`]
+      .length;
+    i++
+  ) {
+    graph.adjacencyList[`${newMaze.res_egg[3][0]},${newMaze.res_egg[3][1]}`][
+      i
+    ].weight = 1;
   }
 
-  for (let i = 0; i < graph.adjacencyList[`${newMaze.res_egg[4][0]},${newMaze.res_egg[4][1]}`].length; i++) {
-    graph.adjacencyList[`${newMaze.res_egg[4][0]},${newMaze.res_egg[4][1]}`][i].weight = 1;
+  for (
+    let i = 0;
+    i <
+    graph.adjacencyList[`${newMaze.res_egg[4][0]},${newMaze.res_egg[4][1]}`]
+      .length;
+    i++
+  ) {
+    graph.adjacencyList[`${newMaze.res_egg[4][0]},${newMaze.res_egg[4][1]}`][
+      i
+    ].weight = 1;
   }
-  console.log("newMaze: ", newMaze);
-console.log("topWall: ", graph.adjacencyList);
   const result = permutator([0, 1, 2]);
 
   let a,
@@ -130,17 +143,12 @@ console.log("topWall: ", graph.adjacencyList);
     c.shift();
     d.shift();
     pos = a.concat(b, c, d);
-    console.log("tamanho: ", pos);
     if (pos.length < temp || temp == 0) {
-      console.log("é menor: ", pos.length);
-      console.log("temp: ", temp);
       temp = pos.length;
       path = pos;
     }
   }
 
-  console.log("AAAAAAAAA: ", a);
-  console.log('PATH: ', path)
   moveBlock(path);
 }
 
@@ -322,40 +330,32 @@ function move(e) {
 }
 
 function sleep(ms) {
-  return new Promise(
-    resolve => setTimeout(resolve, ms)
-  );
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function moveBlock(path) {
   if (!generationComplete) return;
-  let row = current.rowNum;
-  let col = current.colNum;
-  let teste = current.egg[3]
 
   for (let i = 1; i < path.length; i++) {
-
-
     if (current.egg[3] === 500) {
-      speed = speed / 2
+      speed = speed / 2;
     }
 
     if (current.egg[4] === 500) {
-      speed = speed / 2
+      speed = speed / 2;
     }
 
-    console.log('speed', speed)
+    console.log("speed", speed);
     await sleep(speed);
     newMaze.draw();
     ii = position_i(path[i]);
     jj = position_j(path[i], Number(ii[1]));
     let next = newMaze.grid[ii[0]][jj];
-    //
-    //console.log("current1 ", current);
+
     current = next;
     newMaze.draw();
     current.highlight(newMaze.columns);
-    // console.log("current2 ", current);
+
     for (let i = 0; i < 3; i++) {
       if (current.egg[i] && i < 3) {
         current.egg[i] = 3;
@@ -365,7 +365,6 @@ async function moveBlock(path) {
     }
 
     if (current.goal && cont >= 3) complete.style.display = "block";
-
   }
 }
 
@@ -374,7 +373,6 @@ function position_i(path) {
   let i = 0;
   while (path[i] != ",") {
     temp = temp + path[i];
-    console.log("temp0: ", temp);
     i++;
   }
 
@@ -386,7 +384,6 @@ function position_j(path, i) {
   let j = i;
   while (path[j] != undefined) {
     temp = temp + path[j];
-    console.log("temp1: ", temp);
     j++;
   }
 
