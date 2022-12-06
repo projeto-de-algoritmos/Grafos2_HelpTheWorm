@@ -79,13 +79,29 @@ class Maze {
     this.res_egg[2] = randomNumber(0, this.rows - 1);
     console.log("res_egg3: ", this.res_egg[2]);
     this.grid[this.res_egg[2][0]][this.res_egg[2][1]].egg[2] = true;
-    this.res_egg[3] = randomNumber(0, this.rows - 1);
-    console.log("boost: ", this.res_egg[3]);
-    this.grid[this.res_egg[3][0]][this.res_egg[3][1]].egg[3] = 500;
-    this.res_egg[4] = randomNumber(0, this.rows - 1);
-    console.log("boost: ", this.res_egg[4]);
-    this.grid[this.res_egg[4][0]][this.res_egg[4][1]].egg[4] = 500;
 
+    let aux1 = randomNumber(0, this.rows - 1);
+    while (
+      aux1 === this.res_egg[0] ||
+      aux1 === this.res_egg[1] ||
+      aux1 === this.res_egg[2]
+    ) {
+      aux1 = randomNumber(0, this.rows - 1);
+    }
+    this.res_egg[3] = aux1;
+    this.grid[this.res_egg[3][0]][this.res_egg[3][1]].egg[3] = 500;
+
+    let aux2 = randomNumber(0, this.rows - 1);
+    while (
+      aux2 === this.res_egg[0] ||
+      aux2 === this.res_egg[1] ||
+      aux2 === this.res_egg[2] ||
+      aux2 === this.res_egg[3]
+    ) {
+      aux2 = randomNumber(0, this.rows - 1);
+    }
+    this.res_egg[4] = aux2
+    this.grid[this.res_egg[4][0]][this.res_egg[4][1]].egg[4] = 500;
   }
 
   // Draw the canvas by setting the size and placing the cells in the grid array on the canvas.
@@ -297,8 +313,13 @@ class Cell {
     if (this.goal) {
       ctx.fillStyle = "transparent";
       ctx.fillRect(x + 1, y + 1, size / columns - 2, size / rows - 2);
-      ctx.drawImage(wormrole, x + 1, y + 1, size / columns - 2, size / columns - 2);
-
+      ctx.drawImage(
+        wormrole,
+        x + 1,
+        y + 1,
+        size / columns - 2,
+        size / columns - 2
+      );
     }
 
     if (this.egg[0]) {
@@ -314,11 +335,23 @@ class Cell {
       ctx.drawImage(worm, x + 1, y + 1, size / columns - 2, size / columns - 2);
     }
     if (this.egg[3] === 500) {
-      ctx.drawImage(boostpng, x + 1, y + 1, size / columns - 2, size / columns - 2);
+      ctx.drawImage(
+        boostpng,
+        x + 1,
+        y + 1,
+        size / columns - 2,
+        size / columns - 2
+      );
     }
 
     if (this.egg[4] === 500) {
-      ctx.drawImage(boostpng, x + 1, y + 1, size / columns - 2, size / columns - 2);
+      ctx.drawImage(
+        boostpng,
+        x + 1,
+        y + 1,
+        size / columns - 2,
+        size / columns - 2
+      );
     }
 
     if (this.egg[0] == 3) {

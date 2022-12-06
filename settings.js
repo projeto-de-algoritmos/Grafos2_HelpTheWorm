@@ -31,8 +31,13 @@ function generateMaze(e) {
 
   let mazeSize = size.value;
   let number = rowsCols.value;
-  if (mazeSize > 600 || number > 100) {
+  if (mazeSize > 500 || number > 100) {
     alert("Maze too large!");
+    return;
+  }
+
+  if ( number < 4) {
+    alert("Maze too small!");
     return;
   }
 
