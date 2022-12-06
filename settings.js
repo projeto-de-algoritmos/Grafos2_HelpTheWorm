@@ -6,7 +6,7 @@ let replay = document.querySelector(".replay");
 let close = document.querySelector(".close");
 
 let newMaze;
-let newdjikstra;
+let newdijkstra;
 let time = 1;
 let speed = 500;
 let pos = ["a"];
@@ -68,7 +68,7 @@ const permutator = (inputArr) => {
   return result;
 };
 
-function djikstra(rowsCols) {
+function dijkstra(rowsCols) {
   var graph = new WeightedGraph();
 
   for (var i = 0; i < rowsCols; i++) {
@@ -237,7 +237,7 @@ class WeightedGraph {
     const previous = {};
     let path = []; //to return at end
     let smallest;
-    newdjikstra;
+    newdijkstra;
     //build up initial state
     for (let vertex in this.adjacencyList) {
       if (vertex === start) {
