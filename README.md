@@ -1,44 +1,34 @@
-**!! Atenção: Renomeie o seu repositório para (Tema)_(NomeDoProjeto). !!** 
-
-Temas:
- - Grafos1
- - Grafos2
- - PD
- - D&C
- - Greed
- - Final 
- 
- **!! *Não coloque os nomes dos alunos no título do repositório*. Exemplo de título correto: Grafos2_Labirinto-do-Minotauro !!**
- 
- (Apague essa seção)
-
-# NomedoProjeto
+# Help the Worm
 
 **Número da Lista**: X<br>
-**Conteúdo da Disciplina**: XXXXXXXXXX<br>
+**Conteúdo da Disciplina**: Grafos 2 - dijkstra<br>
 
 ## Alunos
 |Matrícula | Aluno |
 | -- | -- |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
+| 18/0042386  |  Kevin Batista |
+| 18/0011600  |  Ailton Aires |
 
 ## Sobre 
-Descreva os objetivos do seu projeto e como ele funciona. 
+A minhoca Carminha acabou de ter uma ninhada e percebeu que 3 de seus filhotes ficaram pelo caminho que ela percorreu num gramado de uma casa. Para ajudar Carminha que estava preocupada com seus filhotes, foi desenvolvido um mapa do gramado que possui um caminho entre seus filhos e um buraco de minhoca. O objetivo é mostrar o menor caminho utilizando o algoritmo de dijkstra entre os 3 filhotes e o buraco de minhoca. Durante o caminho existem alguns boosts de velocidade, será que Carminha passará por eles até o seu destino final?
 
 ## Screenshots
 Adicione 3 ou mais screenshots do projeto em funcionamento.
 
 ## Instalação 
-**Linguagem**: xxxxxx<br>
-**Framework**: (caso exista)<br>
-Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
+**Linguagem**: JavaScript, HTML<br>
+
+O pré requisito é ter um compilador JS na máquina que rodará o projeto e suporte ao HTML5, além de ter o Google Chrome instalado.
 
 ## Uso 
-Explique como usar seu projeto caso haja algum passo a passo após o comando de execução.
+Para executar o projeto é preciso clicar duas vezes no arquivo index.html. Em seguida abrirá uma janela no navegador padrão do dispositivo (desejável que seja o Chrome).
 
-## Outros 
-Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
+Alguns comentários:
+
+- O tamanho máximo do labirinto (Maze) é 500.
+- O número mínimo de rows/columns é 4 e o máximo é 100. 
+
+** O vídeo do projeto está na pasta gravacoes
 
 
 
